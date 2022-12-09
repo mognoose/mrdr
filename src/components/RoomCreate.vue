@@ -38,7 +38,7 @@ export default {
     methods: {
         async checkRoom() {
             const res = await getRoomByCode(this.form.code);
-            console.log(res);
+            console.log(res.docs);
         }
     },
 }
