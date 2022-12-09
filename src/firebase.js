@@ -10,10 +10,16 @@ const firebaseApp = firebase.initializeApp(config);
 const db = firebaseApp.firestore();
 
 const rooms = db.collection('rooms');
+const players = db.collection('players');
 
 export const createRoom = room => {
     room.name = room.name.toUpperCase();
     return rooms.add(room)
+}
+
+export const createPlayer = player => {
+    player.name = player.name.toUpperCase();
+    return players.add(player)
 }
 
 export const getRoom = async code => {
@@ -21,9 +27,34 @@ export const getRoom = async code => {
     return room.exists ? room.data() : null;
 }
 
-export const getRoomByCode = async code => {
-    if(code.length < 4 ) return null
-    return rooms.where('code', '==', code).get();
+export const checkRoomByCode = async code => {
+    let found = false
+    if(code.length < 4 ) return found
+    const res = await rooms.where('code', '==' , code)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                found = true
+            });
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        });
+    return found;
+}
+
+export const getPlayers = async code => {
+    const res = await players.where('code', '==' , code)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                console.log(doc.data());
+            });
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        });
+    return querySnapshot;
 }
 
 export const updateRoom = (code, room ) => {

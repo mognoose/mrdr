@@ -12,7 +12,7 @@
             </div>
 
             <button type="submit" class="btn btn-success mt-3">
-                Join Room
+                {{roomExists ? 'Join Room' : 'Host Room'}}
             </button>
 
         </form>
@@ -20,26 +20,29 @@
 </template>
 
 <script>
-import { createRoom, getRoomByCode } from '@/firebase'
-import { reactive } from '@vue/reactivity'
+import { createRoom, createPlayer, checkRoomByCode } from '@/firebase'
+import { mapGetters } from 'vuex';
 
 export default {
-    setup() {
-        const form = reactive({ name: '', code: '' })
-        
-        const onSubmit = async () => {
-            await createRoom({ ...form })
-            form.name = ''
-            form.code = ''
+    data() {
+        return {
+            roomExists: false
         }
-
-        return { form, onSubmit }
+    },
+    computed: {
+        ...mapGetters(['form'])
     },
     methods: {
         async checkRoom() {
-            const res = await getRoomByCode(this.form.code);
-            console.log(res.docs);
+            this.roomExists = await checkRoomByCode(this.form.code);
+        },
+        async onSubmit() {
+            console.log(this.roomExists);
+            await createPlayer(this.form)
+            if(!this.roomExists) await createRoom(this.form)
+            this.$router.push(`/game/${this.form.code}`)
         }
+
     },
 }
 </script>

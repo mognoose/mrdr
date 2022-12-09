@@ -9,15 +9,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="{ code, name, players } in rooms" :key="code">
+                <tr v-for="{ code, name } in rooms" :key="code">
                     <td>{{ code }}</td>
                     <td>{{ name }}</td>
                     <td>
-                        <router-link :to="`/join/${code}`">
-                            <button class="btn btn-primary btn-sm me-2">
-                                Join
-                            </button>
-                        </router-link>
+                        <button @click="onJoin(code)">
+                            Join
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -26,13 +24,28 @@
 </template>
 
 <script>
-import { useLoadRooms, deleteRoom } from '@/firebase'
+import { useLoadRooms, createPlayer } from '@/firebase'
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
+    computed: {
+        ...mapGetters(['form'])
+    },
     setup() {
         const rooms = useLoadRooms()
-        console.log(rooms);
-        return {rooms, deleteRoom }
+        return {rooms}
+    },
+    methods: {
+        ...mapMutations(['setForm']),
+        async onJoin(code) {
+            if(!this.form.name) {
+                console.error("NAME REQUIRED");
+                return
+            }
+            this.setForm({code, name: this.form.name})
+            await createPlayer(this.form)
+            this.$router.push(`/game/${code}`)
+        }
     },
 }
 </script>
