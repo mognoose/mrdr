@@ -1,26 +1,23 @@
 <template>
-    <div class="card mt-4">
+    <div class="room-list card mt-4">
         <table>
             <thead>
                 <tr>
                     <th scope="col">Code</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Host</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="{ id, code, name } in rooms" :key="code">
+                <tr v-for="{ code, name, players } in rooms" :key="code">
                     <td>{{ code }}</td>
                     <td>{{ name }}</td>
                     <td>
-                        <router-link :to="`/edit/${code}`">
+                        <router-link :to="`/join/${code}`">
                             <button class="btn btn-primary btn-sm me-2">
-                                Edit
+                                Join
                             </button>
                         </router-link>
-                        <button class="btn btn-danger btn-sm" @click="deleteRoom(id)">
-                            Delete
-                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -34,6 +31,7 @@ import { useLoadRooms, deleteRoom } from '@/firebase'
 export default {
     setup() {
         const rooms = useLoadRooms()
+        console.log(rooms);
         return {rooms, deleteRoom }
     },
 }
