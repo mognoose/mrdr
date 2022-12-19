@@ -19,6 +19,7 @@ export const createRoom = room => {
 
 export const createPlayer = player => {
     player.name = player.name.toUpperCase();
+    player.status = 'Joined'
     return players.add(player)
 }
 
@@ -44,17 +45,12 @@ export const checkRoomByCode = async code => {
 }
 
 export const getPlayers = async code => {
-    const res = await players.where('code', '==' , code)
-        .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                console.log(doc.data());
-            });
-        })
-        .catch((error) => {
-            console.log("Error getting documents: ", error);
-        });
-    return querySnapshot;
+    const playerlist = ref([])
+    const close = players.where('code', '==', code).onSnapshot(snapshot => {
+        playerlist.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}))
+    })
+    onUnmounted(close);
+    return playerlist;
 }
 
 export const updateRoom = (code, room ) => {
@@ -69,7 +65,6 @@ export const useLoadRooms = () => {
     const roomlist = ref([])
     const close = rooms.onSnapshot(snapshot => {
         roomlist.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}))
-        console.log(snapshot.docs.map(doc => doc.data));
     })
     onUnmounted(close);
     return roomlist;

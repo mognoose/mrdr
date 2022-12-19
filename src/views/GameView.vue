@@ -1,10 +1,14 @@
 <template>
-  <div>
+  <div class="container">
     <Header small />
     <div class="home">
-      <h1>game</h1>
-      <pre>{{players}}</pre>
+      <div class="room">
+        <h1>ROOM</h1>
+        <h2>{{$route.params.room}}</h2>
+      </div>
+      <PlayerList/>
     </div>
+    <Footer />
   </div>
 </template>
 
@@ -12,35 +16,26 @@
 import { getPlayers } from '@/firebase'
 
 import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
 
-import RoomCreate from '@/components/RoomCreate.vue'
-import RoomList from '@/components/RoomList.vue'
+import PlayerList from '@/components/PlayerList.vue'
 
 export default {
   name: 'HomeView',
   components: {
-    RoomCreate,
-    RoomList,
+    PlayerList,
+    Footer,
     Header,
-  },
-  data() {
-    return {
-      players: []
-    }
-  },
-  mounted () {
-    this.fetchData();
-  },
-  methods: {
-    async fetchData() {
-      this.players = await getPlayers(this.$route.params.room)
-    }
-  },
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.container{
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 6fr 1fr;
+}
 .home {
   display: grid;
   grid-template-columns: 1fr 4fr 1fr;
@@ -53,14 +48,18 @@ export default {
     padding: 3em 0;
   }
 }
-
-.room-create,
-.room-list {
+.room {
   justify-self: center;
   grid-column: 2;
   @media only screen and (max-width: 600px) {
     grid-column: 1;
   }
 }
-
+.player-list {
+  justify-self: center;
+  grid-column: 2;
+  @media only screen and (max-width: 600px) {
+    grid-column: 1;
+  }
+}
 </style>
