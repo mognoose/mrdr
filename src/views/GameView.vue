@@ -6,6 +6,7 @@
         <h1>ROOM</h1>
         <h2>{{$route.params.room}}</h2>
       </div>
+      <CharacterSelect /> 
       <PlayerList/>
     </div>
     <Footer />
@@ -13,17 +14,17 @@
 </template>
 
 <script>
-import { getPlayers } from '@/firebase'
-
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
 import PlayerList from '@/components/PlayerList.vue'
+import CharacterSelect from '@/components/CharacterSelect.vue'
 
 export default {
   name: 'HomeView',
   components: {
     PlayerList,
+    CharacterSelect,
     Footer,
     Header,
   }

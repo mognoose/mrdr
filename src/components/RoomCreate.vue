@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import { createRoom, createPlayer, checkRoomByCode } from '@/firebase'
-import { mapGetters } from 'vuex';
+import { createRoom, checkRoomByCode } from '@/firebase'
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
     data() {
@@ -33,12 +33,14 @@ export default {
         ...mapGetters(['form'])
     },
     methods: {
+        ...mapActions(['createPlayer']),
+
         async checkRoom() {
             this.roomExists = await checkRoomByCode(this.form.code);
         },
         async onSubmit() {
             console.log(this.roomExists);
-            await createPlayer(this.form)
+            await this.createPlayer(this.form)
             if(!this.roomExists) await createRoom(this.form)
             this.$router.push(`/game/${this.form.code}`)
         }

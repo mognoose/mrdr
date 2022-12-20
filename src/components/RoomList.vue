@@ -25,7 +25,7 @@
 
 <script>
 import { useLoadRooms, createPlayer } from '@/firebase'
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
     computed: {
@@ -36,6 +36,7 @@ export default {
         return {rooms}
     },
     methods: {
+        ...mapMutations(['setPlayer']),
         ...mapMutations(['setForm']),
         async onJoin(code) {
             if(!this.form.name) {
