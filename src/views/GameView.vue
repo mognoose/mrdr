@@ -6,7 +6,7 @@
         <h1>ROOM</h1>
         <h2>{{$route.params.room}}</h2>
       </div>
-      <CharacterSelect /> 
+      <CharacterSelect />
       <PlayerList/>
     </div>
     <Footer />
@@ -62,5 +62,8 @@ export default {
   @media only screen and (max-width: 600px) {
     grid-column: 1;
   }
+}
+.ready{
+  grid-column-start: 2;
 }
 </style>

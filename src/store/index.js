@@ -12,6 +12,7 @@ export default createStore({
     loading: state => state.loading,
     showHeader: state => state.showHeader,
     form: state => state.form,
+    player: state => state.player,
   },
   mutations: {
     setLoading(state, data) {
@@ -25,14 +26,20 @@ export default createStore({
     },
     setPlayer(state, data) {
       state.player = data;
+
     },
   },
   actions: {
     async createPlayer(ctx, data) {
-      console.log("ACTIONS");
       const player = await createPlayer(data)
-      console.log("PLAYER:",player);
-      ctx.commit('setPlayer', player)
+      localStorage.setItem('player', player.id);
+      ctx.commit('setPlayer', player.id);
+    },
+    loadPlayer(ctx) {
+      console.log('localStorage: ',localStorage.getItem('player'));
+      if(localStorage.getItem('player')){
+        ctx.commit('setPlayer', localStorage.getItem('player'));
+      }
     }
   }
 })

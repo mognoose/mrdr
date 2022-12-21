@@ -73,10 +73,16 @@ button {
   transition: 200ms;
 }
 
-button:hover{
+button:hover {
   background-color: $bg-light;
   color: $fg-light;
   box-shadow: 0 0 10px $highlight
+}
+
+button:disabled {
+  background-color: $bg-secondary;
+  color: $dark;
+  border: 2px solid $dark;
 }
 
 input {

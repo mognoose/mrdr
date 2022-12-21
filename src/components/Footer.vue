@@ -15,9 +15,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([
-      'showHeader',
-    ])
+    ...mapGetters(['showHeader'])
   }
 };
 </script>

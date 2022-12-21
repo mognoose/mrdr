@@ -70,3 +70,10 @@ export const useLoadRooms = () => {
     return roomlist;
 }
 
+export const setReady = async (data) => {
+    
+    console.log('CHAR:'+data.char+' STATUS: '+data.status+' PLAYER ID:'+data.id);
+    const res = await players.doc(data.id).update(data)
+    return res
+}
+
